@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		D03326F91E54FF090046F11D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D03326F81E54FF090046F11D /* main.m */; };
 		D03326FC1E54FF090046F11D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D03326FB1E54FF090046F11D /* AppDelegate.m */; };
-		D03326FF1E54FF090046F11D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D03326FE1E54FF090046F11D /* ViewController.m */; };
-		D03327021E54FF090046F11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D03327001E54FF090046F11D /* Main.storyboard */; };
 		D03327041E54FF090046F11D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D03327031E54FF090046F11D /* Assets.xcassets */; };
 		D03327071E54FF090046F11D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D03327051E54FF090046F11D /* LaunchScreen.storyboard */; };
+		D03327101E54FF4F0046F11D /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D033270F1E54FF4F0046F11D /* OpenGLView.m */; };
+		D03327131E550CE60046F11D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03327121E550CE60046F11D /* OpenGLES.framework */; };
+		D03327151E550CEF0046F11D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03327141E550CEF0046F11D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,12 +21,13 @@
 		D03326F81E54FF090046F11D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D03326FA1E54FF090046F11D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D03326FB1E54FF090046F11D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D03326FD1E54FF090046F11D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D03326FE1E54FF090046F11D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		D03327011E54FF090046F11D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D03327031E54FF090046F11D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D03327061E54FF090046F11D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D03327081E54FF090046F11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D033270E1E54FF4F0046F11D /* OpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGLView.h; path = ../OpenGLView.h; sourceTree = "<group>"; };
+		D033270F1E54FF4F0046F11D /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenGLView.m; path = ../OpenGLView.m; sourceTree = "<group>"; };
+		D03327121E550CE60046F11D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		D03327141E550CEF0046F11D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03327151E550CEF0046F11D /* QuartzCore.framework in Frameworks */,
+				D03327131E550CE60046F11D /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +48,7 @@
 			children = (
 				D03326F61E54FF090046F11D /* HelloOpenGL */,
 				D03326F51E54FF090046F11D /* Products */,
+				D03327111E550CE60046F11D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,11 +63,10 @@
 		D03326F61E54FF090046F11D /* HelloOpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				D033270E1E54FF4F0046F11D /* OpenGLView.h */,
+				D033270F1E54FF4F0046F11D /* OpenGLView.m */,
 				D03326FA1E54FF090046F11D /* AppDelegate.h */,
 				D03326FB1E54FF090046F11D /* AppDelegate.m */,
-				D03326FD1E54FF090046F11D /* ViewController.h */,
-				D03326FE1E54FF090046F11D /* ViewController.m */,
-				D03327001E54FF090046F11D /* Main.storyboard */,
 				D03327031E54FF090046F11D /* Assets.xcassets */,
 				D03327051E54FF090046F11D /* LaunchScreen.storyboard */,
 				D03327081E54FF090046F11D /* Info.plist */,
@@ -77,6 +81,15 @@
 				D03326F81E54FF090046F11D /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D03327111E550CE60046F11D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D03327141E550CEF0046F11D /* QuartzCore.framework */,
+				D03327121E550CE60046F11D /* OpenGLES.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +153,6 @@
 			files = (
 				D03327071E54FF090046F11D /* LaunchScreen.storyboard in Resources */,
 				D03327041E54FF090046F11D /* Assets.xcassets in Resources */,
-				D03327021E54FF090046F11D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,23 +163,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D03326FF1E54FF090046F11D /* ViewController.m in Sources */,
 				D03326FC1E54FF090046F11D /* AppDelegate.m in Sources */,
 				D03326F91E54FF090046F11D /* main.m in Sources */,
+				D03327101E54FF4F0046F11D /* OpenGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D03327001E54FF090046F11D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D03327011E54FF090046F11D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D03327051E54FF090046F11D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
