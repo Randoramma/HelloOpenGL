@@ -18,6 +18,12 @@
     GLuint _colorRenderBuffer;
     GLuint _positionSlot;
     GLuint _colorSlot;
+    GLuint _projectionUniform;
+    
+    float _currentRotation;
+    GLuint _modelViewUniform;
+    // depth testing
+    GLuint _depthRenderBuffer; 
     
 }
 

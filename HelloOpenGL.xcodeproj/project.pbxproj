@@ -16,6 +16,10 @@
 		D03327151E550CEF0046F11D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03327141E550CEF0046F11D /* QuartzCore.framework */; };
 		D03327171E5516710046F11D /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = D03327161E5516710046F11D /* SimpleVertex.glsl */; };
 		D03327191E5517D50046F11D /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = D03327181E5517D50046F11D /* SimpleFragment.glsl */; };
+		D03327251E560E9B0046F11D /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = D033271C1E560E9B0046F11D /* CC3Foundation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D03327261E560E9B0046F11D /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = D033271E1E560E9B0046F11D /* CC3GLMatrix.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D03327271E560E9B0046F11D /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = D033271F1E560E9B0046F11D /* CC3Kazmath.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D03327281E560E9B0046F11D /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = D03327231E560E9B0046F11D /* CC3Math.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,16 @@
 		D03327141E550CEF0046F11D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D03327161E5516710046F11D /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		D03327181E5517D50046F11D /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
+		D033271B1E560E9B0046F11D /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
+		D033271C1E560E9B0046F11D /* CC3Foundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Foundation.m; sourceTree = "<group>"; };
+		D033271D1E560E9B0046F11D /* CC3GLMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3GLMatrix.h; sourceTree = "<group>"; };
+		D033271E1E560E9B0046F11D /* CC3GLMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3GLMatrix.m; sourceTree = "<group>"; };
+		D033271F1E560E9B0046F11D /* CC3Kazmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CC3Kazmath.c; sourceTree = "<group>"; };
+		D03327201E560E9B0046F11D /* CC3Kazmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Kazmath.h; sourceTree = "<group>"; };
+		D03327211E560E9B0046F11D /* CC3Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Logging.h; sourceTree = "<group>"; };
+		D03327221E560E9B0046F11D /* CC3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Math.h; sourceTree = "<group>"; };
+		D03327231E560E9B0046F11D /* CC3Math.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Math.m; sourceTree = "<group>"; };
+		D03327241E560E9B0046F11D /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +98,7 @@
 		D03326F71E54FF090046F11D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D033271A1E560E9B0046F11D /* Cocos3DMathLib */,
 				D03326F81E54FF090046F11D /* main.m */,
 			);
 			name = "Supporting Files";
@@ -96,6 +111,23 @@
 				D03327121E550CE60046F11D /* OpenGLES.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D033271A1E560E9B0046F11D /* Cocos3DMathLib */ = {
+			isa = PBXGroup;
+			children = (
+				D033271B1E560E9B0046F11D /* CC3Foundation.h */,
+				D033271C1E560E9B0046F11D /* CC3Foundation.m */,
+				D033271D1E560E9B0046F11D /* CC3GLMatrix.h */,
+				D033271E1E560E9B0046F11D /* CC3GLMatrix.m */,
+				D033271F1E560E9B0046F11D /* CC3Kazmath.c */,
+				D03327201E560E9B0046F11D /* CC3Kazmath.h */,
+				D03327211E560E9B0046F11D /* CC3Logging.h */,
+				D03327221E560E9B0046F11D /* CC3Math.h */,
+				D03327231E560E9B0046F11D /* CC3Math.m */,
+				D03327241E560E9B0046F11D /* ccTypes.h */,
+			);
+			path = Cocos3DMathLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,8 +203,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03327271E560E9B0046F11D /* CC3Kazmath.c in Sources */,
 				D03326FC1E54FF090046F11D /* AppDelegate.m in Sources */,
 				D03326F91E54FF090046F11D /* main.m in Sources */,
+				D03327251E560E9B0046F11D /* CC3Foundation.m in Sources */,
+				D03327261E560E9B0046F11D /* CC3GLMatrix.m in Sources */,
+				D03327281E560E9B0046F11D /* CC3Math.m in Sources */,
 				D03327101E54FF4F0046F11D /* OpenGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,6 +360,7 @@
 				D033270D1E54FF090046F11D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

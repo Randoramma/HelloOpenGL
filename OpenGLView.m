@@ -7,6 +7,8 @@
 //
 
 #import "OpenGLView.h"
+#import "CC3GLMatrix.h"
+
 @interface OpenGLView () {
     
     
@@ -31,19 +33,68 @@ typedef struct { // resource for all of our pre-vertex information
     float Color[4];
 } Vertex;
 
-const Vertex Vertices[] = { // array of information for each vertex
-    {{1,-1,0}, {1,0,0,1}},
-    {{1,1,0}, {0,1,0,1}},
-    {{-1,1,0}, {0,0,1,1}},
-    {{-1,-1,0}, {0,0,0,1}}
+//const Vertex Vertices[] = { // array of information for each vertex
+//    {{1,-1,0}, {1,0,0,1}},
+//    {{1,1,0}, {0,1,0,1}},
+//    {{-1,1,0}, {0,0,1,1}},
+//    {{-1,-1,0}, {0,0,0,1}}
+//};
+
+// Vertices post projection
+//const Vertex Vertices[] = {
+//    {{1, -1, -7}, {1, 0, 0, 1}},
+//    {{1, 1, -7}, {0, 1, 0, 1}},
+//    {{-1, 1, -7}, {0, 0, 1, 1}},
+//    {{-1, -1, -7}, {0, 0, 0, 1}}
+//};
+
+// Vertices adding rotation and translation
+//const Vertex Vertices[] = {
+//    {{1, -1, 0}, {1, 0, 0, 1}},
+//    {{1, 1, 0}, {0, 1, 0, 1}},
+//    {{-1, 1, 0}, {0, 0, 1, 1}},
+//    {{-1, -1, 0}, {0, 0, 0, 1}}
+//};
+
+// 3D Vertice
+const Vertex Vertices[] = {
+    {{1, -1, 0}, {1, 0, 0, 1}},
+    {{1, 1, 0}, {1, 0, 0, 1}},
+    {{-1, 1, 0}, {0, 1, 0, 1}},
+    {{-1, -1, 0}, {0, 1, 0, 1}},
+    {{1, -1, -1}, {1, 0, 0, 1}},
+    {{1, 1, -1}, {1, 0, 0, 1}},
+    {{-1, 1, -1}, {0, 1, 0, 1}},
+    {{-1, -1, -1}, {0, 1, 0, 1}}
 };
 
-const GLubyte Indices[] = { // array of list or triangles to create.
-    0,1,2,
-    2,3,0
+// pre 3d Indice
+//const GLubyte Indices[] = { // array of list or triangles to create.
+//    0,1,2,
+//    2,3,0
+//};
+
+
+const GLubyte Indices[] = {
+    // Front
+    0, 1, 2,
+    2, 3, 0,
+    // Back
+    4, 6, 5,
+    4, 7, 6,
+    // Left
+    2, 7, 3,
+    7, 6, 2,
+    // Right
+    0, 4, 1,
+    4, 1, 5,
+    // Top
+    6, 2, 1,
+    1, 6, 5,
+    // Bottom
+    0, 3, 7,
+    0, 7, 4
 };
-
-
 
 static NSString *const SIMPLE_VERTEX = @"SimpleVertex";
 static NSString *const SIMPLE_FRAGMENT = @"SimpleFragment";
@@ -55,11 +106,13 @@ static NSString *const POSITION = @"Position";
     if (self) {
         [self setupLayer];
         [self setupContext];
+        [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
         [self compileShaders];
         [self setupVBOs];
-        [self render];
+        //[self render];
+        [self setupDisplayLink];
     }
     return self;
 }
@@ -131,8 +184,11 @@ static NSString *const POSITION = @"Position";
     _positionSlot = glGetAttribLocation(programHandle, "Position");
     _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
     glEnableVertexAttribArray(_positionSlot);
-    glEnableVertexAttribArray(_colorSlot); 
+    glEnableVertexAttribArray(_colorSlot);
     
+    _projectionUniform = glGetUniformLocation(programHandle, "Projection"); // get the handle for setting the Projection input variable in the vertex shader.
+    
+    _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
     
 }
 
@@ -188,15 +244,46 @@ static NSString *const POSITION = @"Position";
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer); // same as creating a renderbuffer
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer); // attach render buffer to frame buffer's GL_COLOR_ATTACHMENT0 enum slot.
     
+    // associate the new depth buffer with the existing render buffer.
+    glFramebufferRenderbuffer(GL_RENDERBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthRenderBuffer);
+    
+    
 }
 
 /*
  let’s just clear the entire screen to a particular color a quick way to present something within the view.
  */
--(void) render {
+-(void) render: (CADisplayLink *)displayLink {
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT); // actually clear the current render and frame buffer objects.
-   // [_context presentRenderbuffer:GL_RENDERBUFFER]; // present to the new UI layer.
+    // removed when we added 3D depth -> glClear(GL_COLOR_BUFFER_BIT); // actually clear the current render and frame buffer objects.
+    
+    // clear and check depth each update.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    //[_context presentRenderbuffer:GL_RENDERBUFFER]; // present to the new UI layer.
+    
+
+    
+    //use the math library to create a projection matrix
+    CC3GLMatrix * projection = [CC3GLMatrix matrix];
+    float h = 4.0f * self.frame.size.height / self.frame.size.width;
+    // function that lets you specify the coordinates to use for the left/right and top/bottom for the planes, and the near and far z-coordinates.
+    [projection populateFromFrustumLeft:-2
+                               andRight:2
+                              andBottom:-h/2
+                                 andTop:h/2
+                                andNear:4
+                                 andFar:10];
+
+    glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
+    
+    CC3GLMatrix *modelView = [CC3GLMatrix matrix];
+    [modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
+    
+    _currentRotation += displayLink.duration * 90;
+    [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
+    
+    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
     
     glViewport(0, 0, self.frame.size.width, self.frame.size.height); // sets the portion of the UIView for rendering
 
@@ -237,6 +324,20 @@ static NSString *const POSITION = @"Position";
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 
+}
+
+#pragma mark - Setup Display Link 
+
+-(void) setupDisplayLink {
+    CADisplayLink * displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+}
+
+#pragma mark - Depth Renderer 
+-(void) setupDepthBuffer {
+    glGenRenderbuffers(1, &_depthRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, _depthRenderBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, self.frame.size.width, self.frame.size.height);
 }
 
 
