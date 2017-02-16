@@ -7,9 +7,27 @@
 //
 
 #import "OpenGLView.h"
+@interface OpenGLView () {
+    
+    
+    
+}
+
+
+
+
+
+@end
+
+
+
 
 
 @implementation OpenGLView
+
+static NSString *const SIMPLE_VERTEX = @"SimpleVertex";
+static NSString *const SIMPLE_FRAGMENT = @"SimpleFragment";
+static NSString *const POSITION = @"Position";
 
 
 -(instancetype) initWithFrame:(CGRect)frame {
@@ -19,6 +37,7 @@
         [self setupContext];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
+        [self compileShaders];
         [self render];
     }
     return self;
@@ -30,7 +49,70 @@
   //  [super dealloc];
 }
 
+-(GLuint)compileShader:(NSString *)shaderName withType:(GLenum)shaderType {
+    NSString * shaderPath = [[NSBundle mainBundle] pathForResource:shaderName ofType:@"glsl"];
+    NSError * error;
+    NSString * shaderString = [NSString stringWithContentsOfFile:shaderPath
+                                                        encoding:NSUTF8StringEncoding
+                                                           error:&error];
+    
+    if (!shaderString) {
+        NSLog(@"Error loading shader: %@", error.localizedDescription);
+        exit(1);
+    }
+    
+    GLuint shaderHandle = glCreateShader(shaderType); // make a shader object of shader type from method parameter
+    
+    const char * shaderStringUTF8 = [shaderString UTF8String];
+    const int shaderStringLength = (int)[shaderString length];
+    //give OpenGL the source code for this shader
+    glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
+    
+    // compiles shader at run time.
+    glCompileShader(shaderHandle);
+    
+    // record the result if the compilation fails.
+    GLint compileSuccess;
+    glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &compileSuccess);
+    if (compileSuccess == GL_FALSE) {
+        GLchar messages[256];
+        glGetShaderInfoLog(shaderHandle, sizeof(messages), 0, &messages[0]);
+        NSString *messageString = [NSString stringWithUTF8String:messages];
+        NSLog(@"%@", messageString);
+        exit(1);
+        
+    }
+    return shaderHandle;
+}
 
+-(void) compileShaders {
+    GLuint vertexShader = [self compileShader:SIMPLE_VERTEX withType:GL_VERTEX_SHADER];
+    GLuint fragmentShader = [self compileShader:SIMPLE_FRAGMENT withType:GL_FRAGMENT_SHADER];
+    
+    GLuint programHandle = glCreateProgram();
+    glAttachShader(programHandle, vertexShader);
+    glAttachShader(programHandle, fragmentShader);
+    glLinkProgram(programHandle);
+    
+    GLint linkSuccess;
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
+    if (linkSuccess == GL_FALSE) {
+        GLchar messages[256];
+        glGetShaderInfoLog(programHandle, sizeof(messages), 0, &messages[0]);
+        NSString *messageString = [NSString stringWithUTF8String:messages];
+        NSLog(@"%@", messageString);
+        exit(1);
+    }
+    
+    glUseProgram(programHandle);
+    
+    _positionSlot = glGetAttribLocation(programHandle, "Position");
+    _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
+    glEnableVertexAttribArray(_positionSlot);
+    glEnableVertexAttribArray(_colorSlot); 
+    
+    
+}
 /*
  To set up a view to display OpenGL content, you need to set it’s default layer to a special kind of layer called a CAEAGLLayer.
  */

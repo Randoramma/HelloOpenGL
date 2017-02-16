@@ -14,6 +14,8 @@
 		D03327101E54FF4F0046F11D /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D033270F1E54FF4F0046F11D /* OpenGLView.m */; };
 		D03327131E550CE60046F11D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03327121E550CE60046F11D /* OpenGLES.framework */; };
 		D03327151E550CEF0046F11D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03327141E550CEF0046F11D /* QuartzCore.framework */; };
+		D03327171E5516710046F11D /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = D03327161E5516710046F11D /* SimpleVertex.glsl */; };
+		D03327191E5517D50046F11D /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = D03327181E5517D50046F11D /* SimpleFragment.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		D033270F1E54FF4F0046F11D /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenGLView.m; path = ../OpenGLView.m; sourceTree = "<group>"; };
 		D03327121E550CE60046F11D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		D03327141E550CEF0046F11D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D03327161E5516710046F11D /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
+		D03327181E5517D50046F11D /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +52,8 @@
 			children = (
 				D03326F61E54FF090046F11D /* HelloOpenGL */,
 				D03326F51E54FF090046F11D /* Products */,
+				D03327161E5516710046F11D /* SimpleVertex.glsl */,
+				D03327181E5517D50046F11D /* SimpleFragment.glsl */,
 				D03327111E550CE60046F11D /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -152,7 +158,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D03327071E54FF090046F11D /* LaunchScreen.storyboard in Resources */,
+				D03327191E5517D50046F11D /* SimpleFragment.glsl in Resources */,
 				D03327041E54FF090046F11D /* Assets.xcassets in Resources */,
+				D03327171E5516710046F11D /* SimpleVertex.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
