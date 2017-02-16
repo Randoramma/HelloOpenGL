@@ -25,6 +25,26 @@
 
 @implementation OpenGLView
 
+#pragma mark - Shape Object data
+typedef struct { // resource for all of our pre-vertex information
+    float Position[3];
+    float Color[4];
+} Vertex;
+
+const Vertex Vertices[] = { // array of information for each vertex
+    {{1,-1,0}, {1,0,0,1}},
+    {{1,1,0}, {0,1,0,1}},
+    {{-1,1,0}, {0,0,1,1}},
+    {{-1,-1,0}, {0,0,0,1}}
+};
+
+const GLubyte Indices[] = { // array of list or triangles to create.
+    0,1,2,
+    2,3,0
+};
+
+
+
 static NSString *const SIMPLE_VERTEX = @"SimpleVertex";
 static NSString *const SIMPLE_FRAGMENT = @"SimpleFragment";
 static NSString *const POSITION = @"Position";
@@ -38,6 +58,7 @@ static NSString *const POSITION = @"Position";
         [self setupRenderBuffer];
         [self setupFrameBuffer];
         [self compileShaders];
+        [self setupVBOs];
         [self render];
     }
     return self;
@@ -49,6 +70,7 @@ static NSString *const POSITION = @"Position";
   //  [super dealloc];
 }
 
+#pragma mark - Shader Resources
 -(GLuint)compileShader:(NSString *)shaderName withType:(GLenum)shaderType {
     NSString * shaderPath = [[NSBundle mainBundle] pathForResource:shaderName ofType:@"glsl"];
     NSError * error;
@@ -113,6 +135,8 @@ static NSString *const POSITION = @"Position";
     
     
 }
+
+#pragma mark - OpenGL setup layer, context, and buffers.
 /*
  To set up a view to display OpenGL content, you need to set it’s default layer to a special kind of layer called a CAEAGLLayer.
  */
@@ -172,15 +196,51 @@ static NSString *const POSITION = @"Position";
 -(void) render {
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT); // actually clear the current render and frame buffer objects.
-    [_context presentRenderbuffer:GL_RENDERBUFFER]; // present to the new UI layer.
+   // [_context presentRenderbuffer:GL_RENDERBUFFER]; // present to the new UI layer.
+    
+    glViewport(0, 0, self.frame.size.width, self.frame.size.height); // sets the portion of the UIView for rendering
+
+    /* feed the correct values to the two input variables for the vertex shader – the Position and SourceColor attributes
+     attr name,
+     valueType,
+     *FLASE*,
+     size of data structure containing per-vertex data,
+     position for where this data is located.
+     */
+    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),(GLvoid*)(sizeof(float) * 3));
+    
+    // calls every vertex shader and fragment shader passed in...
+    /*
+     manner of drawing the vertices,
+     count of vertices to render (dividing the whole array in bytes by the size of the first element within the array,
+     is the data type of each individual index in the Indices array,
+     From the documentation, it appears that the final parameter should be a pointer to the indices. But since we’re using VBOs it’s a special case – it will use the indices array we already passed to OpenGL-land in the GL_ELEMENT_ARRAY_BUFFER
+     */
+    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+    [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
+#pragma mark - Vertex Buffers 
+
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+ Setup Vertex Object Buffers - object repo for vertex data.
+ */
+-(void) setupVBOs {
+    GLuint vertexBuffer;
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    
+    GLuint indexBuffer;
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+
 }
-*/
+
+
+
+
 
 @end
